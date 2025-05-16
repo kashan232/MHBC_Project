@@ -28,6 +28,11 @@
                     <div class="col-lg-12">
                         <div class="card b-radius--10 bg--transparent">
                             <div class="card-body p-0 ">
+                                @if (session()->has('success'))
+                                <div class="alert alert-success">
+                                    <strong>Success!</strong> {{ session('success') }}.
+                                </div>
+                                @endif
                                 <div class="table-responsive--md table-responsive">
                                     <table id="example" class="display  table table--light style--two bg--white" style="width:100%">
                                         <thead>
@@ -75,18 +80,14 @@
                                                     <a class="dropdown-item btn btn-sm btn-outline--primary ms-1 editBtn" href="#"> <i class="la la-pen"></i> Edit</a>
                                                 </td> -->
                                                 <td>
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-sm btn-outline--info ms-1 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <i class="la la-ellipsis-v"></i>More
-                                                        </button>
-                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                            <a class="dropdown-item btn btn-sm btn-outline--primary ms-1 editBtn" href="#"> <i class="la la-pen"></i> Edit</a>
-                                                            <a class="dropdown-item btn btn-sm btn-outline--primary ms-1 editBtn" href="#"> <i class="la la-eye"></i> View</a>
-                                                            <a class="dropdown-item btn btn-sm btn-outline--primary ms-1 editBtn" href="{{ route('invoice.download', ['id' => $Sale->id]) }}"> <i class="la la-undo"></i> Download Invoice</a>
-                                                            <a class="dropdown-item btn btn-sm btn-outline--primary ms-1 editBtn" href="{{ route('sale-receipt', ['id' => $Sale->id]) }}"> <i class="la la-print"></i> Print Receipt</a> <!-- New Print Receipt Link -->
-                                                        </div>
-                                                    </div>
+                                                    <a class="btn btn-sm btn-primary me-2 editBtn" href="#">
+                                                        <i class="la la-pen"></i> Edit
+                                                    </a>
+                                                    <a class="btn btn-sm btn-danger" href="{{ route('invoice.download', ['id' => $Sale->id]) }}">
+                                                        <i class="la la-file"></i> Invoice
+                                                    </a>
                                                 </td>
+
 
                                             </tr>
                                             @endforeach

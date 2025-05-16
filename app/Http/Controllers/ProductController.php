@@ -70,11 +70,8 @@ class ProductController extends Controller
                 'stock'            => $request->stock,
                 'wholesale_price'            => $request->wholesale_price,
                 'retail_price'            => $request->retail_price,
-                'barcode_number'   => $request->barcode_number,
-                'sku'              => $request->sku,
                 'unit'             => $request->unit,
                 'alert_quantity'   => $request->alert_quantity,
-                'note'             => $request->note,
                 'image'            => $imageName,  // Store null if no image uploaded
                 'created_at'       => Carbon::now(),
                 'updated_at'       => Carbon::now(),
@@ -137,11 +134,10 @@ class ProductController extends Controller
             $product->product_name   = $request->product_name;
             $product->category       = $request->category;
             $product->brand          = $request->brand;
-            $product->sku            = $request->sku;
             $product->unit           = $request->unit;
             $product->alert_quantity = $request->alert_quantity;
+            $product->wholesale_price   = $request->wholesale_price;  // Including retail price update
             $product->retail_price   = $request->retail_price;  // Including retail price update
-            $product->note           = $request->note;
             $product->updated_at     = Carbon::now();
 
             // Save updated product
@@ -160,6 +156,7 @@ class ProductController extends Controller
             return response()->json([
                 'retail_price' => $product->retail_price,
                 'stock' => $product->stock,
+                'unit' => $product->unit,
             ]);
         }
         return response()->json(['message' => 'Product not found'], 404);

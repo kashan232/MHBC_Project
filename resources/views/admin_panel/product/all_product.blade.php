@@ -27,6 +27,11 @@
                     <div class="col-lg-12">
                         <div class="card b-radius--10">
                             <div class="card-body p-0">
+                                 @if (session()->has('success'))
+                                <div class="alert alert-success">
+                                    <strong>Success!</strong> {{ session('success') }}.
+                                </div>
+                                @endif
                                 <div class="table-responsive--md table-responsive">
                                     <table id="example" class="display  table table--light style--two bg--white" style="width:100%">
                                         <thead>

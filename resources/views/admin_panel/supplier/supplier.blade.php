@@ -59,9 +59,6 @@
                                                     <div class="button--group">
                                                         <button type="button" class="btn btn-sm btn-outline--primary editCategoryBtn" data-toggle="modal" data-target="#exampleModal" data-supplier-id="{{ $Supplier->id }}" data-supplier-name="{{ $Supplier->name }}" data-supplier-email="{{ $Supplier->email }}" data-supplier-mobile="{{ $Supplier->mobile }}" data-supplier-company="{{ $Supplier->company_name }}" data-supplier-address="{{ $Supplier->address }}">
                                                             <i class="la la-pencil"></i>Edit </button>
-
-                                                        <a href="#" class="btn btn-sm btn-outline--info">
-                                                            <i class="las la-money-bill-wave-alt"></i>Payment </a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -95,13 +92,6 @@
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label class="form-label">E-Mail</label>
-                                                <input type="email" class="form-control" name="email">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
                                                 <label class="form-label">Mobile <i class="fa fa-info-circle text--primary" title="Type the mobile number including the country code. Otherwise, SMS won't send to that number.">
                                                     </i>
                                                 </label>
@@ -115,7 +105,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-12">
+                                        <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>Address</label>
                                                 <input type="text" name="address" class="form-control" value="">
@@ -155,13 +145,6 @@
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label class="form-label">E-Mail</label>
-                                                <input type="email" class="form-control" id="suplier_email" name="email">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
                                                 <label class="form-label">Mobile <i class="fa fa-info-circle text--primary" title="Type the mobile number including the country code. Otherwise, SMS won't send to that number.">
                                                     </i>
                                                 </label>
@@ -175,7 +158,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-12">
+                                        <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label>Address</label>
                                                 <input type="text" name="address" id="suplier_address" class="form-control">

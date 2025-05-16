@@ -8,6 +8,7 @@ use App\Models\CustomerRecovery;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
@@ -33,16 +34,31 @@ class CustomerController extends Controller
         if (Auth::id()) {
             $usertype = Auth()->user()->usertype;
             $userId = Auth::id();
-            Customer::create([
+
+            // Customer creation
+            $customer = Customer::create([
                 'admin_or_user_id'    => $userId,
-                'customer_name'          => $request->customer_name,
-                'customer_email'          => $request->customer_email,
-                'customer_phone'          => $request->customer_phone,
-                'customer_address'          => $request->customer_address,
-                'created_at'        => Carbon::now(),
-                'updated_at'        => Carbon::now(),
+                'customer_name'       => $request->customer_name,
+                'customer_phone'      => $request->customer_phone,
+                'customer_address'    => $request->customer_address,
+                'created_at'          => Carbon::now(),
+                'updated_at'          => Carbon::now(),
             ]);
-            return redirect()->back()->with('success', 'Customer has been  created successfully');
+
+            // Insert opening balance into customer_credits table
+            $opening_balance = $request->opening_balance;
+
+            DB::table('customer_credits')->insert([
+                'customerId'       => $customer->id,
+                'customer_name'    => $request->customer_name,
+                'previous_balance' => $opening_balance,
+                'net_total'        => 0,
+                'closing_balance'  => $opening_balance,
+                'created_at'       => Carbon::now(),
+                'updated_at'       => Carbon::now()
+            ]);
+
+            return redirect()->back()->with('success', 'Customer and Opening Balance created successfully');
         } else {
             return redirect()->back();
         }
@@ -55,13 +71,11 @@ class CustomerController extends Controller
             // dd($request);
             $update_id = $request->input('customer_id');
             $name = $request->input('customer_name');
-            $email = $request->input('customer_email');
             $phone = $request->input('customer_phone');
             $address = $request->input('customer_address');
 
             Customer::where('id', $update_id)->update([
                 'customer_name'          => $name,
-                'customer_email'          => $email,
                 'customer_phone'          => $phone,
                 'customer_address'          => $address,
                 'updated_at' => Carbon::now(),

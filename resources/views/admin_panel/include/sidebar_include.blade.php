@@ -3,7 +3,7 @@
     <div class="sidebar__inner">
         <div class="sidebar__logo">
             <a href="#" class="sidebar__main-logo">
-                <img src="{{ asset('assets/admin/images/dashbord_logo.png') }}" alt="image">
+                <img src="{{ asset('assets/admin/images/logo_white.png') }}" alt="image">
             </a>
         </div>
         <div class="sidebar__menu-wrapper" id="sidebar__menuWrapper">
@@ -16,30 +16,6 @@
                     </a>
                 </li>
 
-                <li class="sidebar-menu-item sidebar-dropdown">
-                    <a class="" href="javascript:void(0)">
-                        <i class="menu-icon las la-users"></i>
-                        <span class="menu-title">Manage Staff</span>
-                    </a>
-                    <div class="sidebar-submenu ">
-                        <ul>
-                            <li class="sidebar-menu-item ">
-                                <a class="nav-link" href="{{ route('staff') }}">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">All Staff</span>
-                                </a>
-                            </li>
-
-                            <li class="sidebar-menu-item ">
-                                <a class="nav-link" href="{{ route('StaffSalary') }}">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">Staff Salary</span>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </div>
-                </li>
 
                 <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="">

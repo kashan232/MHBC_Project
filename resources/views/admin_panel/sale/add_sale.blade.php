@@ -120,6 +120,7 @@
                                                     <tr>
                                                         <th>Category</th>
                                                         <th>Name</th>
+                                                        <th>Unit</th>
                                                         <th>Quantity<span class="text--danger">*</span></th>
                                                         <th>Price<span class="text--danger">*</span></th>
                                                         <th>Total</th>
@@ -134,79 +135,56 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col-md-8 col-sm-6">
-                                            <div class="form-group">
-                                                <label>Sale Note</label>
-                                                <textarea name="note" class="form-control"></textarea>
-                                            </div>
-                                        </div>
+                                    <div class="row mt-2 mb-2">
+                                        <div class="col-md-12 col-sm-12">
+                                            <div class="row g-3"> <!-- g-3 adds gap between items -->
 
-                                        <div class="col-md-4 col-sm-6">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="form-group">
-                                                        <label>Total Price</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text">Pkr</span>
-                                                            <input type="number" name="total_price" class="form-control total_price" required readonly>
-                                                        </div>
+                                                <div class="col-6">
+                                                    <label for="total_price" class="form-label">Total Price</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">Pkr</span>
+                                                        <input type="number" id="total_price" name="total_price" class="form-control total_price" required readonly>
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-12">
-                                                    <div class="form-group">
-                                                        <label>Discount</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text">Pkr</span>
-                                                            <input type="number" id="discount" name="discount" class="form-control" step="any">
-                                                        </div>
+                                                <div class="col-6">
+                                                    <label for="discount" class="form-label">Discount</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">Pkr</span>
+                                                        <input type="number" id="discount" name="discount" class="form-control" step="any">
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-12">
-                                                    <div class="form-group">
-                                                        <label>Payable Amount</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text">Pkr</span>
-                                                            <input type="number" name="payable_amount" class="form-control payable_amount" readonly>
-                                                        </div>
+                                                <div class="col-6">
+                                                    <label for="scrap_amount" class="form-label">Scrap Amount</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">Pkr</span>
+                                                        <input type="number" id="scrap_amount" name="scrap_amount" class="form-control" step="any">
                                                     </div>
                                                 </div>
 
-                                                
-
-                                                <div class="col-xl-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Previous Balance</label>
-                                                        <input type="text" class="form-control" id="previous_balance" name="previous_balance" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-12">
-                                                    <div class="form-group">
-                                                        <label>Closing Balance</label>
-                                                        <div class="input-group">
-                                                            <input type="text" id="closing_balance" name="closing_balance" class="form-control" readonly>
-                                                        </div>
+                                                <div class="col-6">
+                                                    <label for="payable_amount" class="form-label">Payable Amount</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">Pkr</span>
+                                                        <input type="number" id="payable_amount" name="payable_amount" class="form-control payable_amount" readonly>
                                                     </div>
                                                 </div>
 
-                                                <!-- <div class="col-sm-12">
-                                                    <div class="form-group">
-                                                        <label>Cash Received</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text">Pkr</span>
-                                                            <input type="number" name="cash_received" id="cashReceived" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                </div> -->
-                                                
-                                                <!-- Cash Payment Fields End -->
+                                                <div class="col-6">
+                                                    <label for="previous_balance" class="form-label">Previous Balance</label>
+                                                    <input type="text" id="previous_balance" class="form-control" name="previous_balance" readonly>
+                                                </div>
+
+                                                <div class="col-6">
+                                                    <label for="closing_balance" class="form-label">Closing Balance</label>
+                                                    <input type="text" id="closing_balance" name="closing_balance" class="form-control" readonly>
+                                                </div>
 
                                             </div>
                                         </div>
-
                                     </div>
+
 
 
 
@@ -254,6 +232,10 @@
             $('input[name="total_price"]').on('input', calculateTotalPrice);
             $('#discount').on('input', calculatePayableAmount);
             $('#cashReceived').on('input', updateClosingBalance); // Trigger closing balance update on cash received input
+            $('.total_price, #discount, #scrap_amount, #cashReceived').on('input', function() {
+                calculatePayableAmount();
+                updateClosingBalance();
+            });
 
             // Function to calculate total price
             function calculateTotalPrice() {
@@ -272,7 +254,10 @@
             function calculatePayableAmount() {
                 const totalPrice = parseFloat($('.total_price').val()) || 0;
                 const discount = parseFloat($('#discount').val()) || 0;
-                const payableAmount = Math.max(0, totalPrice - discount);
+                const scrapAmount = parseFloat($('#scrap_amount').val()) || 0;
+
+                // Payable Amount Formula
+                const payableAmount = Math.max(0, totalPrice - discount - scrapAmount);
 
                 $('.payable_amount').val(payableAmount.toFixed(2));
                 updateClosingBalance(); // Update closing balance
@@ -284,7 +269,7 @@
                 const payableAmount = parseFloat($('.payable_amount').val()) || 0;
                 const cashReceived = parseFloat($('#cashReceived').val()) || 0;
 
-                const closingBalance = Math.max(0, previousBalance + payableAmount - cashReceived);
+                const closingBalance = previousBalance + payableAmount - cashReceived;
 
                 $('#closing_balance').val(closingBalance.toFixed(2));
             }
@@ -296,12 +281,13 @@
                 calculateTotalPrice();
             });
 
+
             // Function to create a new row
             function createNewRow(category = '', productName = '', price = '') {
                 return `
             <tr>
                 <td>
-                    <select name="item_category[]" class="form-control item-category" required>
+                    <select name="item_category[]" class="form-control item-category" style="150px;" required>
                         <option value="" disabled ${category ? '' : 'selected'}>Select Category</option>
                         @foreach($Category as $Categories)
                             <option value="{{ $Categories->category }}" ${category === '{{ $Categories->category }}' ? 'selected' : ''}>{{ $Categories->category }}</option>
@@ -309,14 +295,17 @@
                     </select>
                 </td>
                 <td>
-                    <select name="item_name[]" class="form-control item-name" required>
+                    <select name="item_name[]" class="form-control item-name" style="150px;" required>
                         <option value="" disabled ${productName ? '' : 'selected'}>Select Item</option>
                         <option value="${productName}" selected>${productName}</option>
                     </select>
                 </td>
-                <td><input type="number" name="quantity[]" class="form-control quantity" required></td>
-                <td><input type="number" name="price[]" class="form-control price" value="${price}" required></td>
-                <td><input type="number" name="total[]" class="form-control total" readonly></td>
+                <td>
+                    <input type="text" name="unit[]" style="150px;" class="form-control unit" readonly>
+                </td>
+                <td><input type="number" name="quantity[]" style="150px;" class="form-control quantity" required></td>
+                <td><input type="number" name="price[]" style="150px;" class="form-control price" value="${price}" required></td>
+                <td><input type="number" name="total[]" style="150px;" class="form-control total" readonly></td>
                 <td>
                     <button type="button" class="btn btn-danger remove-row">Delete</button>
                 </td>
@@ -362,12 +351,14 @@
                 const productName = $(this).val();
                 const row = $(this).closest('tr');
                 const priceInput = row.find('.price');
+                const unitInput = row.find('.unit');
 
                 if (productName) {
                     fetch(`{{ route('get-product-details', ':productName') }}`.replace(':productName', productName))
                         .then(response => response.json())
                         .then(product => {
                             priceInput.val(product.retail_price);
+                            unitInput.val(product.unit); // Update unit
                         })
                         .catch(error => console.error('Error fetching product details:', error));
                 }

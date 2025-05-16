@@ -31,7 +31,6 @@ class SupplierController extends Controller
             Supplier::create([
                 'admin_or_user_id'    => $userId,
                 'name'          => $request->name,
-                'email'          => $request->email,
                 'mobile'          => $request->mobile,
                 'company_name'          => $request->company_name,
                 'address'          => $request->address,
@@ -59,7 +58,6 @@ class SupplierController extends Controller
             Supplier::where('id', $update_id)->update([
                 'admin_or_user_id'    => $userId,
                 'name'          => $name,
-                'email'          => $email,
                 'mobile'          => $mobile,
                 'company_name'    => $company_name,
                 'address'          => $address,

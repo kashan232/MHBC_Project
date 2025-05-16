@@ -115,7 +115,7 @@
         <!-- Header Section -->
         <div class="invoice-header">
             <div>
-                <img src="logo_url_here" alt="Company Logo">
+                <img src="assets/admin/images/logo.png" alt="image">
             </div>
             <div class="invoice-details">
                 <h1>Invoice</h1>

@@ -21,7 +21,7 @@
             justify-content: center;
             padding: 0 20px;
             background: #ddd;
-            background: url('assets/admin/images/background4.jpg');
+            background: url('assets/admin/images/login.jpg');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
@@ -155,7 +155,7 @@
     </style> 
     <div class="wrapper">
         <div style="width:100%; text-align:center;">
-            <img src="assets/admin/images/login_logo.png" alt="image">
+            <img src="assets/admin/images/logo.png" alt="image" style="width: 130px;">
         </div>
         <!-- <h2>Admin Login</h2> -->
         <form method="POST" action="{{ route('login') }}">

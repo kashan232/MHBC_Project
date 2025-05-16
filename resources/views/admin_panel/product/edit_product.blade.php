@@ -25,9 +25,9 @@
                     <div class="col-lg-12 col-md-12 mb-30">
                         <div class="card">
                             <div class="card-body">
-                            @if (session()->has('success'))
-                                        <div class="alert alert-success">
-                                            <strong>Success!</strong> {{ session('success') }}.
+                                @if (session()->has('success'))
+                                <div class="alert alert-success">
+                                    <strong>Success!</strong> {{ session('success') }}.
                                 </div>
                                 @endif
                                 <form action="{{ route('update-product',['id'=> $product_details->id ]) }}" method="POST" enctype="multipart/form-data">
@@ -90,13 +90,6 @@
 
                                                 <div class="col-sm-6">
                                                     <div class="form-group">
-                                                        <label class="form-label">SKU</label>
-                                                        <input type="text" class="form-control" name="sku" value="{{ $product_details->sku }}" required>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
                                                         <label>Unit (UoM)</label>
                                                         <select name="unit" class="form-control" required>
                                                             <option value="" disabled>Select One</option>
@@ -115,6 +108,12 @@
                                                         <input type="number" name="alert_quantity" class="form-control" value="{{ $product_details->alert_quantity }}" required>
                                                     </div>
                                                 </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group ">
+                                                        <label class="form-label">Wholesale Price</label>
+                                                        <input type="number" class="form-control " name="wholesale_price" value="{{ $product_details->wholesale_price }}">
+                                                    </div>
+                                                </div>
 
                                                 <div class="col-sm-6">
                                                     <div class="form-group">
@@ -123,12 +122,6 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-12">
-                                                    <div class="form-group">
-                                                        <label>Note</label>
-                                                        <textarea name="note" class="form-control">{{ $product_details->note }}</textarea>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>

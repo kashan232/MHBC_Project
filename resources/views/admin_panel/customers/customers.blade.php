@@ -46,7 +46,7 @@
                                             <tr>
                                                 <th>S.N.</th>
                                                 <th>Name</th>
-                                                <th>Phone | Email</th>
+                                                <th>Phone </th>
                                                 <th>Address</th>
                                                 <th>Closing Balance</th>
                                                 <th>Action</th>
@@ -57,12 +57,12 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $Customer->customer_name }}</td>
-                                                <td>{{ $Customer->customer_phone }}<br>{{ $Customer->customer_email }}</td>
+                                                <td>{{ $Customer->customer_phone }}</td>
                                                 <td>{{ $Customer->customer_address }}</td>
                                                 <td><strong>{{ $Customer->closing_balance ?? '0' }}</strong></td> <!-- Display the closing balance -->
                                                 <td>
                                                     <div class="button--group">
-                                                        <button type="button" class="btn btn-sm btn-outline--primary editcustomerbtn" data-toggle="modal" data-target="#exampleModal" data-customer-id="{{ $Customer->id }}" data-customer-name="{{ $Customer->customer_name }}" data-customer-email="{{ $Customer->customer_email }}" data-customer-phone="{{ $Customer->customer_phone }}"
+                                                        <button type="button" class="btn btn-sm btn-outline--primary editcustomerbtn" data-toggle="modal" data-target="#exampleModal" data-customer-id="{{ $Customer->id }}" data-customer-name="{{ $Customer->customer_name }}" data-customer-phone="{{ $Customer->customer_phone }}"
                                                             data-customer-address="{{ $Customer->customer_address }}">
                                                             <i class="la la-pencil"></i>Edit </button>
 
@@ -70,10 +70,7 @@
                                                             <i class="las la-money-bill"></i>Recovery
                                                         </button>
 
-                                                        <button type="button" class="btn btn-sm btn-outline--info customerCreditBtn" data-toggle="modal" data-target="#customerCreditModal" data-customer-id="{{ $Customer->id }}" data-customer-name="{{ $Customer->customer_name }}">
-                                                            <i class="las la-credit-card"></i>Credit
-                                                        </button>
-
+                                                        
                                                     </div>
 
 
@@ -107,10 +104,6 @@
                                         <input type="text" class="form-control" name="customer_name" required>
                                     </div>
                                     <div class="form-group">
-                                        <label>Email</label>
-                                        <input type="text" class="form-control" name="customer_email">
-                                    </div>
-                                    <div class="form-group">
                                         <label>Mobile</label>
                                         <input type="text" class="form-control" name="customer_phone">
                                     </div>
@@ -118,11 +111,16 @@
                                         <label>Address</label>
                                         <input type="text" class="form-control" name="customer_address">
                                     </div>
+                                    <div class="form-group">
+                                        <label>Opening Balance</label>
+                                        <input type="number" class="form-control" name="opening_balance" required>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn--primary w-100 h-45">Submit</button>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -144,10 +142,7 @@
                                         <input type="hidden" name="customer_id" id="customer_id">
                                         <input type="text" class="form-control" name="customer_name" id="edit_customer_name">
                                     </div>
-                                    <div class="form-group">
-                                        <label>Email</label>
-                                        <input type="text" class="form-control" name="customer_email" id="edit_customer_email">
-                                    </div>
+
                                     <div class="form-group">
                                         <label>Mobile</label>
                                         <input type="text" class="form-control" name="customer_phone" id="edit_customer_phone">
@@ -252,15 +247,13 @@
                 // Extract category ID and name from data attributes
                 var customerId = $(this).data('customer-id');
                 var customername = $(this).data('customer-name');
-                var customeremail = $(this).data('customer-email');
                 var customerphone = $(this).data('customer-phone');
                 var customeraddress = $(this).data('customer-address');
 
-                console.log(customerId, customername, customeremail, customerphone, customeraddress);
+                console.log(customerId, customername, customerphone, customeraddress);
 
                 $('#customer_id').val(customerId);
                 $('#edit_customer_name').val(customername);
-                $('#edit_customer_email').val(customeremail);
                 $('#edit_customer_phone').val(customerphone);
                 $('#edit_customer_address').val(customeraddress);
 

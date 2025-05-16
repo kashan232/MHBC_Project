@@ -100,12 +100,31 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Unit(UoM)</label>
+                                                        <select name="unit" class="select2-basic form-control" required>
+                                                            <option value="" selected disabled>Select One</option>
+                                                            @foreach($all_unit as $unit)
+                                                            <option value="{{ $unit->unit }}">
+                                                                {{ $unit->unit }}
+                                                            </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
                                                     <div class="form-group ">
                                                         <label class="form-label">Initial stock</label>
                                                         <input type="text" class="form-control " name="stock" value="0">
                                                     </div>
                                                 </div>
-
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Alert Quantity</label>
+                                                        <input type="number" name="alert_quantity"
+                                                            class="form-control" value="0">
+                                                    </div>
+                                                </div>
                                                 <div class="col-sm-6">
                                                     <div class="form-group ">
                                                         <label class="form-label">Wholesale Price</label>
@@ -121,44 +140,10 @@
                                                 </div>
 
                                                 <!-- Barcode Number -->
-                                                <div class="col-sm-6">
-                                                    <div class="form-group ">
-                                                        <label class="form-label">Barcode Number</label>
-                                                        <input type="text" class="form-control" name="barcode_number" id="barcodeInput" value="Null" autofocus>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <div class="form-group ">
-                                                        <label class="form-label">SKU</label>
-                                                        <input type="text" class="form-control " name="sku" value="Null">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label>Unit(UoM)</label>
-                                                        <select name="unit" class="select2-basic form-control" required>
-                                                            <option value="" selected disabled>Select One</option>
-                                                            @foreach($all_unit as $unit)
-                                                            <option value="{{ $unit->unit }}">
-                                                                {{ $unit->unit }}
-                                                            </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label>Alert Quantity</label>
-                                                        <input type="number" name="alert_quantity"
-                                                            class="form-control" value="0">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-12">
-                                                    <div class="form-group">
-                                                        <label>Note</label>
-                                                        <textarea name="note" class="form-control"></textarea>
-                                                    </div>
-                                                </div>
+
+
+
+
                                             </div>
                                         </div>
                                     </div>
