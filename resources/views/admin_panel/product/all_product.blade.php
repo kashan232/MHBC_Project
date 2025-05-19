@@ -37,7 +37,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Image</th>
-                                                <th>Name | SKU </th>
+                                                <th>Name </th>
                                                 <th>Category | Brand</th>
                                                 <th>Stock </th>
                                                 <th>Alert Qty</th>
@@ -57,8 +57,6 @@
                                                 </td>
                                                 <td class="long-text">
                                                     <span class="fw-bold text--primary">{{ $product->product_name }}</span>
-                                                    <br>
-                                                    <span class="text--small ">{{ $product->sku }}</span>
                                                 </td>
                                                 <td>
                                                     {{ $product->category }}

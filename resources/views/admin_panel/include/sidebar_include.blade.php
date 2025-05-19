@@ -27,19 +27,19 @@
                             <li class="sidebar-menu-item  ">
                                 <a href="{{ route('category') }}" class="nav-link">
                                     <i class="menu-icon la la-dot-circle"></i>
-                                    <span class="menu-title">Categories</span>
+                                    <span class="menu-title">Company</span>
                                 </a>
                             </li>
                             <li class="sidebar-menu-item  ">
                                 <a href="{{ route('brand') }}" class="nav-link">
                                     <i class="menu-icon la la-dot-circle"></i>
-                                    <span class="menu-title">Brands</span>
+                                    <span class="menu-title">Types</span>
                                 </a>
                             </li>
                             <li class="sidebar-menu-item  ">
                                 <a href="{{ route('unit') }}" class="nav-link">
                                     <i class="menu-icon la la-dot-circle"></i>
-                                    <span class="menu-title">Units</span>
+                                    <span class="menu-title">Plates</span>
                                 </a>
                             </li>
                             <li class="sidebar-menu-item  ">
@@ -145,6 +145,12 @@
                                 <a href="{{ route('all-sales') }}" class="nav-link">
                                     <i class="menu-icon la la-dot-circle"></i>
                                     <span class="menu-title">All Sales</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a href="{{ route('Cash-sales') }}" class="nav-link">
+                                    <i class="menu-icon la la-dot-circle"></i>
+                                    <span class="menu-title">Cash Sales</span>
                                 </a>
                             </li>
                         </ul>

@@ -85,17 +85,21 @@
                         <h1>Invoice</h1>
                         <span><strong>Invoice No:</strong> #{{ $sale->invoice_no }}</span><br>
                         <span><strong>Date:</strong> {{ date('d F Y', strtotime($sale->sale_date)) }}</span><br>
+                        @if ($sale->sale_type === 'cash')
+                        <span><strong>Name:</strong> {{ $sale->customer }}</span><br>
+                        @else
                         <span><strong>Name:</strong> {{ $customer->customer_name }}</span><br>
                         <span><strong>Mobile:</strong> {{ $customer->customer_phone }}</span><br>
+                        @endif
                     </div>
                 </div>
             </div>
             <div class="row p-2 mt-2">
-            <div class="col-md-12 text-right">
-                <strong>Qazi Qayum Road, Ghari Khatan, Hyderabad</strong><br>
-                <strong>Contact: 0311-0876473 | Hasnain Shaikh</strong>
+                <div class="col-md-12 text-right">
+                    <strong>Qazi Qayum Road, Ghari Khatan, Hyderabad</strong><br>
+                    <strong>Contact: 0311-0876473 | Hasnain Shaikh</strong>
+                </div>
             </div>
-    </div>
         </div>
 
         <table class="table table-bordered invoice-table mt-3">
@@ -132,26 +136,51 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="4" class="text-left"></td>
-                    <td class="text-left"><strong>SubTotal:</strong></td>
+                    <td colspan="4"></td>
+                    <td><strong>SubTotal:</strong></td>
                     <td>{{ number_format($sale->total_price, 0) }}</td>
                 </tr>
                 <tr>
-                    <td colspan="4" class="text-left"></td>
-                    <td class="text-left"><strong>Discount:</strong></td>
+                    <td colspan="4"></td>
+                    <td><strong>Discount:</strong></td>
                     <td>{{ number_format($sale->discount, 0) }}</td>
                 </tr>
                 <tr>
-                    <td colspan="4" class="text-left"></td>
-                    <td class="text-left"><strong>Scrap Amount:</strong></td>
+                    <td colspan="4"></td>
+                    <td><strong>Scrap Amount:</strong></td>
                     <td>{{ number_format($sale->scrap_amount, 0) }}</td>
                 </tr>
                 <tr>
-                    <td colspan="4" class="text-left"></td>
-                    <td class="text-left"><strong>Net Amount:</strong></td>
+                    <td colspan="4"></td>
+                    <td><strong>Net Amount:</strong></td>
                     <td>{{ number_format($sale->Payable_amount, 0) }}</td>
                 </tr>
+
+                @if($sale->sale_type === 'cash')
+                <tr>
+                    <td colspan="4"></td>
+                    <td><strong>Cash Received:</strong></td>
+                    <td>{{ number_format($sale->cash_received, 0) }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4"></td>
+                    <td><strong>Cash Return:</strong></td>
+                    <td>{{ number_format($sale->change_return, 0) }}</td>
+                </tr>
+                @elseif($sale->sale_type === 'credit' && isset($creditInfo))
+                <tr>
+                    <td colspan="4"></td>
+                    <td><strong>Previous Balance:</strong></td>
+                    <td>{{ number_format($creditInfo->net_total, 0) }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4"></td>
+                    <td><strong>Closing Balance:</strong></td>
+                    <td>{{ number_format($creditInfo->closing_balance, 0) }}</td>
+                </tr>
+                @endif
             </tfoot>
+
         </table>
 
         <div class="footer">

@@ -12,6 +12,7 @@ use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf; // If using barryvdh/laravel-dompdf
+use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
 {
@@ -82,15 +83,10 @@ class SaleController extends Controller
 
         $discount = (float)($request->input('discount', 0));
         $totalPrice = (float)$request->input('total_price', 0);
-        $cashReceived = (float)$request->input('cash_received', 0);
-        $changeToReturn = (float)$request->input('change_to_return', 0);
-
-        \Log::info('Processed Values:', [
-            'discount' => $discount,
-            'total_price' => $totalPrice,
-            'cash_received' => $cashReceived,
-            'change_to_return' => $changeToReturn,
-        ]);
+        $payable_amount = (float) $request->input('payable_amount', 0);
+        $cashReceived = (float) $request->input('cash_received', 0);
+        $cashReturn = (float) $request->input('cash_return', 0);
+        $saleType = $request->input('sale_type');
 
         $usertype = Auth()->user()->usertype;
         $userId = Auth::id();
@@ -99,7 +95,7 @@ class SaleController extends Controller
         $itemCategories = $request->input('item_category', []);
         $quantities = $request->input('quantity', []);
 
-        // Step 1: Validate stock for all products
+        // Step 1: Validate stock
         foreach ($itemNames as $key => $item_name) {
             $item_category = $itemCategories[$key] ?? '';
             $quantity = $quantities[$key] ?? 0;
@@ -113,56 +109,56 @@ class SaleController extends Controller
             }
 
             if ($product->stock < $quantity) {
-                return redirect()->back()->with('error', "Insufficient stock for product $item_name. Available: {$product->stock}, Required: $quantity.");
+                return redirect()->back()->with('error', "Insufficient stock for product $item_name.");
             }
         }
 
-        $customerInfo = explode('|', $request->input('customer_info'));
-        if (count($customerInfo) < 2) {
-            return redirect()->back()->with('error', 'Invalid customer information format.');
-        }
+        // Customer info (only for credit)
+        $customerId = null;
+        $customerName = null;
 
-        $customerId = $customerInfo[0];
-        $customerName = $customerInfo[1];
+        if ($saleType == 'credit') {
+            $customerInfo = explode('|', $request->input('customer_info'));
+            if (count($customerInfo) < 2) {
+                return redirect()->back()->with('error', 'Invalid customer information format.');
+            }
 
-        $discount = (float) ($request->input('discount', 0));
-        $totalPrice = (float) $request->input('total_price', 0);
-        $netTotal = $totalPrice - $discount;
+            $customerId = $customerInfo[0];
+            $customerName = $customerInfo[1];
 
-        $customerCredit = CustomerCredit::where('customerId', $customerId)->first();
+            $netTotal = $totalPrice - $discount;
 
-        $payable_amount = (float) $request->input('payable_amount', 0);
+            $customerCredit = CustomerCredit::where('customerId', $customerId)->first();
+            if ($customerCredit) {
+                $previousBalance = $customerCredit->previous_balance;
+                $closingBalance = $previousBalance + $payable_amount;
 
-        $previousBalance = 0;
-        $closingBalance = 0;
-
-        if ($customerCredit) {
-            $previousBalance = $customerCredit->previous_balance;
-            $closingBalance = $previousBalance + $payable_amount;
-
-            $customerCredit->net_total = $netTotal;
-            $customerCredit->closing_balance = $closingBalance;
-            $customerCredit->previous_balance = $closingBalance;
-            $customerCredit->save();
+                $customerCredit->net_total = $netTotal;
+                $customerCredit->closing_balance = $closingBalance;
+                $customerCredit->previous_balance = $closingBalance;
+                $customerCredit->save();
+            } else {
+                CustomerCredit::create([
+                    'customerId' => $customerId,
+                    'customer_name' => $customerName,
+                    'previous_balance' => $payable_amount,
+                    'net_total' => $netTotal,
+                    'closing_balance' => $payable_amount,
+                ]);
+            }
         } else {
-            CustomerCredit::create([
-                'customerId' => $customerId,
-                'customer_name' => $customerName,
-                'previous_balance' => $payable_amount,
-                'net_total' => $netTotal,
-                'closing_balance' => $payable_amount,
-            ]);
-
-            $previousBalance = 0;
-            $closingBalance = $payable_amount;
+            // For cash, use walk-in customer name
+            $customerName = $request->input('cash_customer_name', 'Walk-in Customer');
         }
 
+        // Prepare sale data
         $saleData = [
             'userid' => $userId,
             'user_type' => $usertype,
             'invoice_no' => $invoiceNo,
             'customerId' => $customerId,
             'customer' => $customerName,
+            'sale_type' => $saleType,
             'sale_date' => $request->input('sale_date', ''),
             'warehouse_id' => $request->input('warehouse_id', ''),
             'item_category' => json_encode($request->input('item_category', [])),
@@ -178,8 +174,15 @@ class SaleController extends Controller
             'Payable_amount' => $payable_amount,
         ];
 
+        // Add cash fields only if cash sale
+        if ($saleType == 'cash') {
+            $saleData['cash_received'] = $cashReceived;
+            $saleData['change_return'] = $cashReturn;
+        }
+
         $sale = Sale::create($saleData);
 
+        // Update stock
         foreach ($itemNames as $key => $item_name) {
             $item_category = $itemCategories[$key] ?? '';
             $quantity = $quantities[$key] ?? 0;
@@ -193,8 +196,10 @@ class SaleController extends Controller
                 $product->save();
             }
         }
+
         return redirect()->route('all-sales')->with('success', 'Sale recorded successfully');
     }
+
 
 
     // public function store_Sale(Request $request)
@@ -349,6 +354,27 @@ class SaleController extends Controller
         }
     }
 
+    public function Cash_sales()
+    {
+
+        if (Auth::id()) {
+            $userId = Auth::id();
+            $usertype = Auth()->user()->usertype;
+
+            // Retrieve all Sales with their related Purchase data (including invoice_no)
+            $Sales = Sale::where('userid', $userId)
+                ->where('user_type', $usertype)
+                ->where('sale_type', 'cash')
+                ->get();
+            // dd($Sales);
+            return view('admin_panel.sale.cash_sales', [
+                'Sales' => $Sales,
+            ]);
+        } else {
+            return redirect()->back();
+        }
+    }
+
     public function get_customer_amount($id)
     {
         // Fetch the customer by customer_id (not id)
@@ -368,19 +394,23 @@ class SaleController extends Controller
 
     public function downloadInvoice($id)
     {
-        // Fetch the sale data
         $sale = Sale::findOrFail($id);
 
-        // Fetch the customer information based on the customer name in the sale
-        $customer = Customer::where('customer_name', $sale->customer)->first();
+        // Get customer info if it's a credit sale
+        $customer = null;
+        $creditInfo = null;
 
-        if (!$customer) {
-            abort(404, 'Customer not found for this sale.');
+        if ($sale->sale_type === 'credit') {
+            $customer = Customer::where('customer_name', $sale->customer)->first();
+            $creditInfo = DB::table('customer_credits')
+                ->where('customer_name', $sale->customer)
+                ->latest()
+                ->first();
         }
 
-        // Simply return the blade view with sale and customer data (no PDF generation here)
-        return view('admin_panel.invoices.invoice', compact('sale', 'customer'));
+        return view('admin_panel.invoices.invoice', compact('sale', 'customer', 'creditInfo'));
     }
+
 
 
     // public function downloadInvoice($id)

@@ -69,16 +69,29 @@
                                     @csrf
                                     <div class="row mb-3">
                                         <div class="col-xl-4 col-sm-6">
-                                            <div class="form-group" id="supplier-wrapper">
+                                            <div class="form-group">
+                                                <label class="form-label">Sale Type</label>
+                                                <select name="sale_type" id="sale_type" class="form-control" required>
+                                                    <option value="" disabled selected>Select Sale Type</option>
+                                                    <option value="credit">Credit</option>
+                                                    <option value="cash">Cash</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-sm-6">
+                                            <div class="form-group" id="credit-customer-wrapper">
                                                 <label class="form-label">Customers</label>
-                                                <select name="customer_info" class="select2-basic form-control" id="customer-select" required>
+                                                <select name="customer_info" class="select2-basic form-control" id="customer-select">
                                                     <option selected disabled>Select One</option>
                                                     @foreach($Customers as $Customer)
-                                                    <option value="{{ $Customer->id . '|' . $Customer->customer_name }}">
-                                                        {{ $Customer->customer_name }}
-                                                    </option>
+                                                    <option value="{{ $Customer->id . '|' . $Customer->customer_name }}">{{ $Customer->customer_name }}</option>
                                                     @endforeach
                                                 </select>
+                                            </div>
+
+                                            <div class="form-group d-none" id="cash-customer-wrapper">
+                                                <label class="form-label">Customer Name</label>
+                                                <input type="text" name="cash_customer_name" class="form-control" placeholder="Enter Customer Name">
                                             </div>
                                         </div>
 
@@ -87,7 +100,7 @@
                                                 <label>Date</label>
                                                 <input name="sale_date" type="date" data-language="en"
                                                     class="datepicker-here form-control bg--white"
-                                                    required>
+                                                    value="{{ date('Y-m-d') }}" required>
                                             </div>
                                         </div>
                                         <div class="col-xl-4 col-sm-6">
@@ -171,6 +184,7 @@
                                                     </div>
                                                 </div>
 
+
                                                 <div class="col-6">
                                                     <label for="previous_balance" class="form-label">Previous Balance</label>
                                                     <input type="text" id="previous_balance" class="form-control" name="previous_balance" readonly>
@@ -181,17 +195,20 @@
                                                     <input type="text" id="closing_balance" name="closing_balance" class="form-control" readonly>
                                                 </div>
 
+                                                <div class="col-6 d-none" id="cash-received-group">
+                                                    <label for="cashReceived" class="form-label">Cash Received</label>
+                                                    <input type="number" id="cashReceived" name="cash_received" class="form-control">
+                                                </div>
+
+                                                <div id="cash-return-group" class="form-group col-6">
+                                                    <label for="cash_return">Cash Return</label>
+                                                    <input type="text" id="cash_return" name="cash_return" class="form-control" readonly>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
-
-
-
-
-
                                     <button type="submit" class="btn btn--primary w-100 h-45">Submit</button>
-
-
                                 </form>
                             </div>
                         </div>
@@ -208,6 +225,50 @@
 
     <script>
         $(document).ready(function() {
+
+            function toggleFieldsBasedOnSaleType(type) {
+                if (type === 'credit') {
+                    $('#credit-customer-wrapper').removeClass('d-none');
+                    $('#cash-customer-wrapper').addClass('d-none');
+
+                    $('#previous_balance').closest('.col-6').removeClass('d-none');
+                    $('#closing_balance').closest('.col-6').removeClass('d-none');
+
+                    $('#cash-received-group').addClass('d-none');
+                    $('#cash-return-group').addClass('d-none');
+
+                } else if (type === 'cash') {
+                    $('#credit-customer-wrapper').addClass('d-none');
+                    $('#cash-customer-wrapper').removeClass('d-none');
+
+                    $('#previous_balance').closest('.col-6').addClass('d-none');
+                    $('#closing_balance').closest('.col-6').addClass('d-none');
+
+                    $('#cash-received-group').removeClass('d-none');
+                    $('#cash-return-group').removeClass('d-none');
+                }
+            }
+
+            // Initial load: hide all conditional fields
+            $('#credit-customer-wrapper, #cash-customer-wrapper').addClass('d-none');
+            $('#previous_balance').closest('.col-6').addClass('d-none');
+            $('#closing_balance').closest('.col-6').addClass('d-none');
+            $('#cash-received-group').addClass('d-none');
+            $('#cash-return-group').addClass('d-none');
+
+            // Trigger logic on sale type change
+            $('#sale_type').on('change', function() {
+                const type = $(this).val();
+                toggleFieldsBasedOnSaleType(type);
+            });
+
+            // Optionally, trigger on page load if sale_type is already selected
+            const preSelectedType = $('#sale_type').val();
+            if (preSelectedType) {
+                toggleFieldsBasedOnSaleType(preSelectedType);
+            }
+
+
             // Customer selection change
             $('#customer-select').change(function() {
                 const customerData = $(this).val().split('|');
@@ -270,8 +331,11 @@
                 const cashReceived = parseFloat($('#cashReceived').val()) || 0;
 
                 const closingBalance = previousBalance + payableAmount - cashReceived;
-
                 $('#closing_balance').val(closingBalance.toFixed(2));
+
+                // Calculate cash return only if cash received is more than payable amount
+                const cashReturn = cashReceived > payableAmount ? (cashReceived - payableAmount) : 0;
+                $('#cash_return').val(cashReturn.toFixed(2));
             }
 
             // Add a new row
@@ -287,7 +351,7 @@
                 return `
             <tr>
                 <td>
-                    <select name="item_category[]" class="form-control item-category" style="150px;" required>
+                    <select name="item_category[]" class="form-control item-category" style="width:150px;" required>
                         <option value="" disabled ${category ? '' : 'selected'}>Select Category</option>
                         @foreach($Category as $Categories)
                             <option value="{{ $Categories->category }}" ${category === '{{ $Categories->category }}' ? 'selected' : ''}>{{ $Categories->category }}</option>
@@ -295,17 +359,17 @@
                     </select>
                 </td>
                 <td>
-                    <select name="item_name[]" class="form-control item-name" style="150px;" required>
+                    <select name="item_name[]" class="form-control item-name" style="width:180px;" required>
                         <option value="" disabled ${productName ? '' : 'selected'}>Select Item</option>
                         <option value="${productName}" selected>${productName}</option>
                     </select>
                 </td>
                 <td>
-                    <input type="text" name="unit[]" style="150px;" class="form-control unit" readonly>
+                    <input type="text" name="unit[]" style="width:150px;" class="form-control unit" readonly>
                 </td>
-                <td><input type="number" name="quantity[]" style="150px;" class="form-control quantity" required></td>
-                <td><input type="number" name="price[]" style="150px;" class="form-control price" value="${price}" required></td>
-                <td><input type="number" name="total[]" style="150px;" class="form-control total" readonly></td>
+                <td><input type="number" name="quantity[]" style="width:150px;" class="form-control quantity" required></td>
+                <td><input type="number" name="price[]" style="width:150px;" class="form-control price" value="${price}" required></td>
+                <td><input type="number" name="total[]" style="width:150px;" class="form-control total" readonly></td>
                 <td>
                     <button type="button" class="btn btn-danger remove-row">Delete</button>
                 </td>

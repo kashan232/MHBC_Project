@@ -17,9 +17,9 @@
             <div class="bodywrapper__inner">
 
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                    <h6 class="page-title">Categories</h6>
+                    <h6 class="page-title">Compay</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                        <button type="button" class="btn btn-sm btn-outline--primary cuModalBtn" data-modal_title="Add New Category">
+                        <button type="button" class="btn btn-sm btn-outline--primary cuModalBtn" data-modal_title="Add New Compay">
                             <i class="las la-plus"></i>Add New </button>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="editcategoryLabel">Edit Category</h5>
+                                <h5 class="modal-title" id="editcategoryLabel">Edit Company</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -122,7 +122,7 @@
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <label>Name</label>
-                                        <input type="text" id="editCategoryId" name="category_id" class="form-control" required>
+                                        <input type="hidden" id="editCategoryId" name="category_id" class="form-control" required>
                                         <input type="text" id="editCategoryName" name="category_name" class="form-control">
                                     </div>
                                 </div>

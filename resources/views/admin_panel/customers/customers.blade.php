@@ -19,13 +19,6 @@
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
                     <h6 class="page-title">All Customer</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                        <form action="" method="GET" class="d-flex gap-2">
-                            <div class="input-group w-auto">
-                                <input type="search" name="search" class="form-control bg--white" placeholder="Username" value="">
-                                <button class="btn btn--primary" type="submit"><i class="la la-search"></i></button>
-                            </div>
-
-                        </form>
                         <button type="button" class="btn btn-sm btn-outline--primary cuModalBtn" data-modal_title="Add New Customer">
                             <i class="las la-plus"></i>Add New </button>
                     </div>
@@ -202,35 +195,7 @@
                     </div>
                 </div>
 
-                <div class="modal fade" id="customerCreditModal" tabindex="-1" aria-labelledby="customerCreditModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="customerCreditModalLabel">Add Credit for Customer</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <form id="customerCreditForm" action="{{ route('customer.credit') }}" method="POST">
-                                @csrf
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <label>Customer Name</label>
-                                        <input type="text" class="form-control" id="credit_customer_name" name="customer_name" readonly>
-                                        <input type="hidden" name="customer_id" id="credit_customer_id">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Credit Amount</label>
-                                        <input type="number" class="form-control" name="credit_amount" id="credit_amount" required min="0">
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn--primary w-100 h-45">Add Credit</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                
 
 
 

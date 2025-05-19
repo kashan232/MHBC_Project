@@ -15,11 +15,11 @@
             <div class="bodywrapper__inner">
 
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
-                    <h6 class="page-title">Brands</h6>
+                    <h6 class="page-title">Types</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
                         
                         <button type="button" class="btn btn-sm btn-outline--primary cuModalBtn"
-                            data-modal_title="Add New Brand">
+                            data-modal_title="Add New Types">
                             <i class="las la-plus"></i>Add New </button>
                         
                     </div>
@@ -106,7 +106,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="editbrandLabel">Edit Brand</h5>
+                            <h5 class="modal-title" id="editbrandLabel">Edit Types</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
