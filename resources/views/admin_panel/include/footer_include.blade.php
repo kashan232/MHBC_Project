@@ -90,10 +90,13 @@
     }
 </script>
 
-<script src="assets/admin/js/nicEdit.js"></script>
-<script src="assets/admin/js/vendor/select2.min.js"></script>
-<script src="assets/admin/js/app.js?v=1"></script>
-<script src="assets/admin/js/cu-modal.js"></script>
+
+<script src="{{ asset('assets/admin/js/nicEdit.js') }}"></script>
+<script src="{{ asset('assets/admin/js/vendor/select2.min.js') }}"></script>
+<script src="{{ asset('assets/admin/js/app.js?v=1') }}"></script>
+<script src="{{ asset('assets/admin/js/cu-modal.js') }}"></script>
+
+
 
 <script>
     "use strict";

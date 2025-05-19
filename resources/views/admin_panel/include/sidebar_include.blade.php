@@ -133,7 +133,7 @@
                         <span class="menu-title">Customer Recoveries</span>
                     </a>
                 </li>
-                
+
                 <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="">
                         <i class="menu-icon la la-shopping-cart"></i>
@@ -147,16 +147,40 @@
                                     <span class="menu-title">All Sales</span>
                                 </a>
                             </li>
-                            <li class="sidebar-menu-item  ">
-                                <a href="#"
-                                    class="nav-link">
-                                    <i class="menu-icon la la-dot-circle"></i>
-                                    <span class="menu-title">Sales Return</span>
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </li>
+
+                <li class="sidebar-menu-item sidebar-dropdown">
+                    <a href="javascript:void(0)" class="">
+                        <i class="menu-icon fas fa-chart-pie"></i>
+                        <i class=""></i>
+                        <span class="menu-title">Reporting</span>
+                    </a>
+                    <div class="sidebar-submenu ">
+                        <ul>
+                            <li class="sidebar-menu-item ">
+                                <a href="{{ route('sale-report') }}"
+                                    class="nav-link">
+                                    <i class="menu-icon la la-dot-circle"></i>
+                                    <span class="menu-title">Sales Report</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                        <ul>
+                            <li class="sidebar-menu-item ">
+                                <a href="{{ route('purchase-report') }}"
+                                    class="nav-link">
+                                    <i class="menu-icon la la-dot-circle"></i>
+                                    <span class="menu-title"> Purchase Report </span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+
             </ul>
             @endif
 

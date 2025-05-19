@@ -114,8 +114,8 @@ class HomeController extends Controller
             $user->password = Hash::make($request->input('new_password'));
             $user->save();
 
-            // Add a success message to the session
-            Session::flash('success', 'Password changed successfully');
+            // Redirect back with success message
+            return redirect()->back()->with('success', 'Password changed successfully');
 
             // Redirect back with success message
             return redirect()->back();

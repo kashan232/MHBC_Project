@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StaffSalaryController;
@@ -140,6 +141,14 @@ Route::post('/customer/recovery', [CustomerController::class, 'processRecovery']
 Route::get('/customer-recovires', [CustomerController::class, 'customer_recovires'])->middleware(['auth','admin'])->name('customer-recovires');
 Route::post('/customer/credit', [CustomerController::class, 'addCredit'])->name('customer.credit');
 
+
+
+Route::get('/sale-report', [ReportController::class, 'sale_report'])->name('sale-report');
+Route::get('/filter-sales', [ReportController::class, 'filterSales'])->name('filter.sales');
+
+Route::get('/purchase-report', [ReportController::class, 'purchase_report'])->name('purchase-report');
+
+Route::get('/filter-purchase', [ReportController::class, 'filterpurchase'])->name('filter.purchase');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

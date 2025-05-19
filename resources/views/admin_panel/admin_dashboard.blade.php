@@ -10,7 +10,7 @@
         @include('admin_panel.include.navbar_include')
         <!-- navbar-wrapper end -->
 
-        <div class="body-wrapper">
+        <div class="body-wrapper">  
             <div class="bodywrapper__inner">
 
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
@@ -38,21 +38,15 @@
                     <div class="col-xxl-3 col-sm-6">
                         <div class="widget-two box--shadow2 b-radius--5 bg--white">
                             <i class="las la-shopping-bag overlay-icon text--success"></i>
-
                             <div class="widget-two__icon b-radius--5   bg--success  ">
                                 <i class="las la-shopping-bag"></i>
                             </div>
-
                             <div class="widget-two__content">
                                 <h3>{{ $totalPurchasesPrice }}</h3>
                                 <p>Purchases</p>
                             </div>
-
-                            <a href="#"
-                                class="widget-two__btn btn btn-outline--success">View All</a>
                         </div>
-
-                    </div><!-- dashboard-w1 end -->
+                    </div>
 
                     <div class="col-xxl-3 col-sm-6">
                         <div class="widget-two box--shadow2 b-radius--5 bg--white">
@@ -61,41 +55,27 @@
                             <div class="widget-two__icon b-radius--5   bg--danger  ">
                                 <i class="las la-share"></i>
                             </div>
-
                             <div class="widget-two__content">
                                 <h3>{{ $totalPurchaseReturnsPrice }}</h3>
                                 <p>Purchases Return</p>
                             </div>
-
-                            <a href="#"
-                                class="widget-two__btn btn btn-outline--danger">View All</a>
+                           
                         </div>
-
-                    </div><!-- dashboard-w1 end -->
+                    </div>
 
                     <div class="col-xxl-3 col-sm-6">
                         <div class="widget-two box--shadow2 b-radius--5 bg--white">
                             <i class="las la-shopping-cart overlay-icon text--primary"></i>
-
                             <div class="widget-two__icon b-radius--5   bg--primary  ">
                                 <i class="las la-shopping-cart"></i>
                             </div>
-
                             <div class="widget-two__content">
                                 <h3>{{$totalsales }}</h3>
                                 <p>Sales</p>
                             </div>
-
-                            <a href="#"
-                                class="widget-two__btn btn btn-outline--primary">View All</a>
                         </div>
-
-                    </div><!-- dashboard-w1 end -->
-
-                    
-
-
-                </div><!-- row end-->
+                    </div>
+                </div>
 
 
 
@@ -104,8 +84,6 @@
                     <div class="col-xl-6">
                         <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
                             <h5>Product Alert Items </h5>
-                            <a href="#"
-                                class="btn btn-sm btn-outline--primary">View All</a>
                         </div>
                         <div class="card">
                             <div class="card-body p-0">
@@ -114,7 +92,6 @@
                                         <thead>
                                             <tr>
                                                 <th>Product</th>
-                                                <th>Category</th>
                                                 <th>Alert</th>
                                                 <th>Stock</th>
                                                 <th>Unit</th>
@@ -125,7 +102,6 @@
                                             @foreach($all_product as $product)
                                             <tr>
                                                 <td class="fw-bold"> {{ $product->product_name }} </td>
-                                                <td> {{ $product->category }} </td>
                                                 <td>
                                                     <span class="bg--danger px-2 rounded">
                                                         {{ $product->alert_quantity }}
@@ -193,8 +169,6 @@
                                 <h3 class="text-white">{{ $categories }}</h3>
                                 <p class="text-white">Categories</p>
                             </div>
-                            <a href="https://script.viserlab.com/torylab/admin/category" class="widget-two__btn">View
-                                All</a>
                         </div>
                     </div><!-- dashboard-w1 end -->
                     <div class="col-xxl-3 col-sm-6">
@@ -207,8 +181,6 @@
                                 <h3 class="text-white">{{ $products }}</h3>
                                 <p class="text-white">Products</p>
                             </div>
-                            <a href="https://script.viserlab.com/torylab/admin/product/all" class="widget-two__btn">View
-                                All</a>
                         </div>
                     </div><!-- dashboard-w1 end -->
 
@@ -222,8 +194,6 @@
                                 <h3 class="text-white">{{ $suppliers }}</h3>
                                 <p class="text-white">Suppliers</p>
                             </div>
-                            <a href="https://script.viserlab.com/torylab/admin/supplier/all"
-                                class="widget-two__btn">View All</a>
                         </div>
                     </div><!-- dashboard-w1 end -->
 
@@ -237,8 +207,6 @@
                                 <h3 class="text-white">{{ $customers }}</h3>
                                 <p class="text-white">Customers</p>
                             </div>
-                            <a href="https://script.viserlab.com/torylab/admin/customer/all"
-                                class="widget-two__btn">View All</a>
                         </div>
                     </div><!-- dashboard-w1 end -->
                 </div><!-- row end-->

@@ -5,106 +5,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice {{ $sale->invoice_no }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            font-size: 12px;
+            font-size: 14px;
             color: #333;
-            margin: 20px;
+            background-color: #f9f9f9;
+            padding: 20px;
         }
 
         .invoice-container {
-            max-width: 900px;
+            width: 100%;
+            background-color: #fff;
+            padding: 30px;
             margin: auto;
-            padding: 20px;
-            border: 1px solid #ddd;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .invoice-header {
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .invoice-header .row {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 20px;
         }
 
-        .invoice-header img {
-            width: 100px;
+        .invoice-header .logo img {
+            width: 150px;
         }
 
-        .invoice-header .invoice-details {
+        .invoice-header .details {
             text-align: right;
-        }
-
-        .invoice-header .invoice-details h1 {
-            font-size: 20px;
-            font-weight: bold;
-            margin: 0;
+            flex-grow: 1;
         }
 
         .billing-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .billing-info div {
-            width: 48%;
-            background-color: #f8f9fa;
             padding: 15px;
-            border-radius: 5px;
-        }
-
-        .billing-info h4 {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #007bff;
-        }
-
-        .billing-info p {
-            margin: 5px 0;
-        }
-
-        /* Items Table */
-        .table {
-            width: 100%;
+            background-color: #f1f1f1;
             margin-bottom: 20px;
-            font-size: 12px;
         }
 
-        .table th {
-            background-color: #007bff;
-            color: white;
-            text-align: center;
+        .invoice-table {
+            width: 100%;
         }
 
-        .table th, .table td {
-            padding: 8px;
+        .invoice-table th,
+        .invoice-table td {
+            padding: 10px;
             border: 1px solid #ddd;
             text-align: center;
         }
 
-        /* Total Section */
-        .total-section {
-            text-align: right;
-            margin-top: 20px;
-            font-weight: bold;
-        }
-
-        .total-section p {
-            margin-bottom: 5px;
-        }
-
-        /* Footer */
-        .invoice-footer {
+        .footer {
             text-align: center;
             margin-top: 30px;
-            font-size: 10px;
-            color: #888;
+            font-size: 12px;
+            color: #555;
         }
     </style>
 </head>
@@ -112,36 +71,39 @@
 <body>
 
     <div class="invoice-container">
-        <!-- Header Section -->
         <div class="invoice-header">
-            <div>
-                <img src="assets/admin/images/logo.png" alt="image">
+            <div class="row p-2">
+                <div class="col-md-6 d-flex align-items-center">
+                    <div class="logo">
+                        <!-- <img src="assets/admin/images/logo.png" alt="Logo"> -->
+                        <img src="{{ asset('assets/admin/images/logo.png') }}" alt="Logo">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="details text-right">
+                        <h1>Invoice</h1>
+                        <span><strong>Invoice No:</strong> #{{ $sale->invoice_no }}</span><br>
+                        <span><strong>Date:</strong> {{ date('d F Y', strtotime($sale->sale_date)) }}</span><br>
+                        <span><strong>Name:</strong> {{ $customer->customer_name }}</span><br>
+                        <span><strong>Mobile:</strong> {{ $customer->customer_phone }}</span><br>
+                    </div>
+                </div>
             </div>
-            <div class="invoice-details">
-                <h1>Invoice</h1>
-                <p><strong>Invoice No:</strong> #{{ $sale->invoice_no }}</p>
-                <p><strong>Date:</strong> {{ date('d F Y', strtotime($sale->sale_date)) }}</p>
+            <div class="row p-2 mt-2">
+            <div class="col-md-12 text-right">
+                <strong>Qazi Qayum Road, Ghari Khatan, Hyderabad</strong><br>
+                <strong>Contact: 0311-0876473 | Hasnain Shaikh</strong>
             </div>
+    </div>
         </div>
 
-        <!-- Billing Info -->
-        <div class="billing-info">
-            <div>
-                <h4>Billing</h4>
-                <p><strong>Name:</strong> {{ $customer->customer_name }}</p>
-                <p><strong>Mobile:</strong> {{ $customer->customer_phone }}</p>
-                <p><strong>Email:</strong> {{ $customer->customer_email }}</p>
-                <p><strong>Address:</strong> {{ $customer->customer_address }}</p>
-                <p><strong>Warehouse:</strong> {{ $sale->warehouse_id }}</p>
-            </div>
-        </div>
-
-        <!-- Items Table -->
-        <table class="table table-bordered">
-            <thead>
+        <table class="table table-bordered invoice-table mt-3">
+            <thead class="text-white" style="background: #004cac;">
                 <tr>
                     <th>Item Category</th>
                     <th>Item Name</th>
+                    <th>Unit</th>
                     <th>Quantity</th>
                     <th>Price</th>
                     <th>Total</th>
@@ -151,6 +113,7 @@
                 @php
                 $categories = json_decode($sale->item_category);
                 $names = json_decode($sale->item_name);
+                $unit = json_decode($sale->unit);
                 $quantities = json_decode($sale->quantity);
                 $prices = json_decode($sale->price);
                 $totals = json_decode($sale->total);
@@ -158,32 +121,48 @@
 
                 @for ($i = 0; $i < count($categories); $i++)
                     <tr>
-                        <td>{{ $categories[$i] }}</td>
-                        <td>{{ $names[$i] }}</td>
-                        <td>{{ $quantities[$i] }}</td>
-                        <td>{{ number_format($prices[$i], 0) }}</td>
-                        <td>{{ number_format($totals[$i], 0) }}</td>
+                    <td>{{ $categories[$i] }}</td>
+                    <td>{{ $names[$i] }}</td>
+                    <td>{{ $unit[$i] }}</td>
+                    <td>{{ $quantities[$i] }}</td>
+                    <td>{{ number_format($prices[$i], 0) }}</td>
+                    <td>{{ number_format($totals[$i], 0) }}</td>
                     </tr>
-                @endfor
+                    @endfor
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" class="text-left"></td>
+                    <td class="text-left"><strong>SubTotal:</strong></td>
+                    <td>{{ number_format($sale->total_price, 0) }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="text-left"></td>
+                    <td class="text-left"><strong>Discount:</strong></td>
+                    <td>{{ number_format($sale->discount, 0) }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="text-left"></td>
+                    <td class="text-left"><strong>Scrap Amount:</strong></td>
+                    <td>{{ number_format($sale->scrap_amount, 0) }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="text-left"></td>
+                    <td class="text-left"><strong>Net Amount:</strong></td>
+                    <td>{{ number_format($sale->Payable_amount, 0) }}</td>
+                </tr>
+            </tfoot>
         </table>
 
-        <!-- Total Section -->
-        <div class="total-section">
-            <p>Subtotal: {{ number_format($sale->total_price, 0) }}</p>
-            <p>Discount: {{ number_format($sale->discount, 0) }}</p>
-            <p>Grand Total: {{ number_format($sale->total_price - $sale->discount, 0) }}</p>
-            <p>Received: {{ number_format($sale->cash_received, 0) }}</p>
-            <p>Change to Return: {{ number_format($sale->change_return, 0) }}</p>
-        </div>
-
-        <!-- Footer -->
-        <div class="invoice-footer">
-            <p>Thank you for your business!</p>
+        <div class="footer">
+            <strong>For Home Delivery or Assistance, Contact Us Now!</strong><br>
+            Software Developed by ProWave Software Solutions<br>
+            +92 317 3836223 | +92 317 3859647
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>

@@ -94,7 +94,6 @@
                                                             <i class="la la-ellipsis-v"></i>More
                                                         </button>
                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                            <a class="dropdown-item btn btn-sm btn-outline--primary ms-1 editBtn" href="#"> <i class="la la-pen"></i> Edit</a>
                                                             <a href="#" class="dropdown-item btn btn-sm btn-outline--primary ms-1 paymentBtn"
                                                                 data-id="{{ $purchase->id }}"
                                                                 data-invoice_no="{{ $purchase->invoice_no }}"
