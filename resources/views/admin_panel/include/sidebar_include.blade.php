@@ -176,13 +176,22 @@
                         </ul>
                         <ul>
                             <li class="sidebar-menu-item ">
+                                <a href="{{ route('PRF-report') }}"
+                                    class="nav-link">
+                                    <i class="menu-icon la la-dot-circle"></i>
+                                    <span class="menu-title">PRF Report</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                        <ul>
+                            <li class="sidebar-menu-item ">
                                 <a href="{{ route('purchase-report') }}"
                                     class="nav-link">
                                     <i class="menu-icon la la-dot-circle"></i>
                                     <span class="menu-title"> Purchase Report </span>
                                 </a>
                             </li>
-
                         </ul>
                     </div>
                 </li>

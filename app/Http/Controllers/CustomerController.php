@@ -141,6 +141,52 @@ class CustomerController extends Controller
         }
     }
 
+    public function updateRecovery(Request $request)
+    {
+        $request->validate([
+            'recovery_id' => 'required|exists:customer_recoveries,id',
+            'recovery_date' => 'required|date',
+            'adjustment_type' => 'required|in:plus,minus',
+            'adjustment_amount' => 'required|numeric|min:0',
+        ]);
+
+        $recovery = CustomerRecovery::findOrFail($request->recovery_id);
+        $oldAmount = $recovery->recovery_amount;
+        $oldClosing = $recovery->closing_balance;
+
+        $adjustmentType = $request->input('adjustment_type');
+        $adjustmentAmount = $request->input('adjustment_amount');
+
+        // Default to old values
+        $newRecoveryAmount = $oldAmount;
+        $newClosing = $oldClosing;
+
+        if ($adjustmentType === 'plus') {
+            $newRecoveryAmount += $adjustmentAmount;
+            $newClosing -= $adjustmentAmount;
+        } else {
+            $newRecoveryAmount -= $adjustmentAmount;
+            $newClosing += $adjustmentAmount;
+        }
+
+        $recovery->recovery_date = $request->recovery_date;
+        $recovery->recovery_amount = $newRecoveryAmount;
+        $recovery->closing_balance = $newClosing;
+        $recovery->save();
+
+        // Update customer credit (if applicable)
+        $customerCredit = CustomerCredit::where('customerId', $recovery->customer_id)->first();
+        if ($customerCredit) {
+            $customerCredit->previous_balance = $newRecoveryAmount;
+            $customerCredit->closing_balance = $newClosing;
+            $customerCredit->save();
+        }
+
+        return redirect()->back()->with('success', 'Customer recovery updated successfully!');
+    }
+
+
+
     public function addCredit(Request $request)
     {
         $request->validate([

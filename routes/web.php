@@ -141,11 +141,15 @@ Route::post('/update-customer', [CustomerController::class, 'update_customer'])-
 Route::post('/customer/recovery', [CustomerController::class, 'processRecovery'])->name('customer.recovery');
 Route::get('/customer-recovires', [CustomerController::class, 'customer_recovires'])->middleware(['auth','admin'])->name('customer-recovires');
 Route::post('/customer/credit', [CustomerController::class, 'addCredit'])->name('customer.credit');
+Route::put('/customer/recovery/update', [CustomerController::class, 'updateRecovery'])->name('customer.recovery.update');
 
 
 
 Route::get('/sale-report', [ReportController::class, 'sale_report'])->name('sale-report');
 Route::get('/filter-sales', [ReportController::class, 'filterSales'])->name('filter.sales');
+
+Route::get('/PRF-report', [ReportController::class, 'PRF_report'])->name('PRF-report');
+Route::get('/PRF-filter-sales', [ReportController::class, 'PRFfiltersales'])->name('PRF-filter-sales');
 
 Route::get('/purchase-report', [ReportController::class, 'purchase_report'])->name('purchase-report');
 
