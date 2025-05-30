@@ -72,16 +72,23 @@ Route::post('/store-product', [ProductController::class, 'store_product'])->name
 Route::get('/edit-product/{id}', [ProductController::class, 'edit_product'])->middleware(['auth','admin'])->name('edit-product');
 Route::post('/update-product/{id}', [ProductController::class, 'update_product'])->name('update-product');
 Route::get('/product-alerts', [ProductController::class, 'product_alerts'])->name('product-alerts');
-
+Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
 //warehouse
 Route::get('/warehouse', [WarehouseController::class, 'warehouse'])->middleware(['auth','admin'])->name('warehouse');
 Route::post('/store-warehouse', [WarehouseController::class, 'store_warehouse'])->name('store-warehouse');
 Route::post('/update-warehouse', [WarehouseController::class, 'update_warehouse'])->name('update-warehouse');
 
+
 //supplier
 Route::get('/supplier', [SupplierController::class, 'supplier'])->middleware(['auth','admin'])->name('supplier');
 Route::post('/store-supplier', [SupplierController::class, 'store_supplier'])->name('store-supplier');
 Route::post('/update-supplier', [SupplierController::class, 'update_supplier'])->name('update-supplier');
+Route::get('/supplier-ledger', [SupplierController::class, 'supplier_ledger'])->name('supplier-ledger');
+
+Route::get('/supplier-payments', [SupplierController::class, 'supplier_payments'])->name('supplier-payments');
+Route::get('/get-supplier-balance/{id}', [SupplierController::class, 'getsupplierbalance'])->name('get-supplier-balance');
+Route::post('/supplier-payment-store', [SupplierController::class, 'supplierpaymentstore'])->name('supplier-payment-store');
+Route::get('/amount-paid-supplier', [SupplierController::class, 'amountpaidsupplier'])->name('amount-paid-supplier');
 
 //Staff
 Route::get('/staff', [StaffController::class, 'staff'])->middleware(['auth','admin'])->name('staff');

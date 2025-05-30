@@ -77,14 +77,44 @@
                     </a>
                 </li>
 
-
-
-
-                <li class="sidebar-menu-item">
-                    <a href="{{ route('supplier') }}" class="nav-link">
-                        <i class="menu-icon la la-user-friends"></i>
+                <li class="sidebar-menu-item sidebar-dropdown">
+                    <a href="javascript:void(0)" class="">
+                        <i class="menu-icon la la-shopping-bag"></i>
                         <span class="menu-title">Supplier</span>
                     </a>
+                    <div class="sidebar-submenu ">
+                        <ul>
+                            <li class="sidebar-menu-item">
+                                <a href="{{ route('supplier') }}"
+                                    class="nav-link">
+                                    <i class="menu-icon la la-dot-circle"></i>
+                                    <span class="menu-title">Supplier</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item  ">
+                                <a href="{{ route('supplier-ledger') }}"
+                                    class="nav-link">
+                                    <i class="menu-icon la la-dot-circle"></i>
+                                    <span class="menu-title">Supplier Ledger</span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-menu-item  ">
+                                <a href="{{ route('supplier-payments') }}"
+                                    class="nav-link">
+                                    <i class="menu-icon la la-dot-circle"></i>
+                                    <span class="menu-title">Supplier Payment</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item  ">
+                                <a href="{{ route('amount-paid-supplier') }}"
+                                    class="nav-link">
+                                    <i class="menu-icon la la-dot-circle"></i>
+                                    <span class="menu-title">Supplier Paid Amounts</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
 
                 <li class="sidebar-menu-item sidebar-dropdown">

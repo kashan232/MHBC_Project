@@ -9,6 +9,7 @@ use App\Models\Purchase;
 use App\Models\PurchaseReturn;
 use App\Models\StaffSalary;
 use App\Models\Supplier;
+use App\Models\SupplierLedger;
 use App\Models\User;
 use App\Models\Warehouse;
 use Carbon\Carbon;
@@ -76,6 +77,8 @@ class PurchaseController extends Controller
 
     public function store_Purchase(Request $request)
     {
+        $userId = Auth::id();
+
         // dd($request);
         // Validate the request
         $validatedData = $request->validate([
@@ -140,6 +143,25 @@ class PurchaseController extends Controller
                 $product->save();
             }
         }
+
+        $previousBalance = SupplierLedger::where('supplier_id', $request->supplier)
+            ->value('closing_balance') ?? 0; // If no previous balance, start from 0
+        // Calculate new balances
+
+        $newPreviousBalance = $totalPrice - $discount;
+
+        $newClosingBalance = $previousBalance + $newPreviousBalance;
+
+        // Update or create distributor ledger
+        SupplierLedger::updateOrCreate(
+            ['supplier_id' => $request->supplier],
+            [
+                'supplier_id' => $request->supplier,
+                'admin_or_user_id' => $userId,
+                'previous_balance' => $newPreviousBalance,
+                'closing_balance' => $newClosingBalance,
+            ]
+        );
 
         return redirect()->back()->with('success', 'Purchase saved successfully and stock updated.');
     }

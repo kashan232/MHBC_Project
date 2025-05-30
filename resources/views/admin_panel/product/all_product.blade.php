@@ -16,7 +16,7 @@
                 <div class="d-flex mb-30 flex-wrap gap-3 justify-content-between align-items-center">
                     <h6 class="page-title">All Products</h6>
                     <div class="d-flex flex-wrap justify-content-end gap-2 align-items-center breadcrumb-plugins">
-                       
+
                         <a href="{{ route('add-product') }}"
                             class="btn btn-outline--primary">
                             <i class="la la-plus"></i>Add New </a>
@@ -27,7 +27,7 @@
                     <div class="col-lg-12">
                         <div class="card b-radius--10">
                             <div class="card-body p-0">
-                                 @if (session()->has('success'))
+                                @if (session()->has('success'))
                                 <div class="alert alert-success">
                                     <strong>Success!</strong> {{ session('success') }}.
                                 </div>
@@ -77,6 +77,11 @@
                                                         <a href="{{ route('edit-product',['id' => $product->id ]) }}"
                                                             class="btn btn-sm btn-outline--primary ms-1 editBtn"><i
                                                                 class="las la-pen"></i> Edit</a>
+
+                                                        <button class="btn btn-sm btn-outline--danger ms-1 deleteBtn"
+                                                            data-id="{{ $product->id }}">
+                                                            <i class="las la-trash"></i> Delete
+                                                        </button>
                                                     </div>
                                                 </td>
                                                 @endforeach
@@ -92,3 +97,50 @@
         </div>
     </div>
     @include('admin_panel.include.footer_include')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const deleteButtons = document.querySelectorAll('.deleteBtn');
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = this.getAttribute('data-id');
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetch("{{ url('/product') }}/" + productId, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                        'Accept': 'application/json'
+                                    }
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        Swal.fire('Deleted!', data.message, 'success')
+                                            .then(() => {
+                                                location.reload();
+                                            });
+                                    } else {
+                                        Swal.fire('Error!', data.message || 'Something went wrong.', 'error');
+                                    }
+                                })
+                                .catch(() => {
+                                    Swal.fire('Error!', 'Delete request failed.', 'error');
+                                });
+                        }
+                    });
+                });
+            });
+        });
+    </script>

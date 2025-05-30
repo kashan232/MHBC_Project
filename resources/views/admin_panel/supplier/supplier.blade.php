@@ -111,6 +111,13 @@
                                                 <input type="text" name="address" class="form-control" value="">
                                             </div>
                                         </div>
+
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label>Opening Balance</label>
+                                                <input type="number" step="0.01" name="opening_balance" class="form-control" value="0" required>
+                                            </div>
+                                        </div>
                                     </div>
 
                                 </div>
