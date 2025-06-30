@@ -157,12 +157,18 @@
                     let totalDiscount = 0;
                     let totalNetAmount = 0;
                     let totalScrapAmount = 0;
+                    let totalQuantity = 0;
 
                     if (response.length > 0) {
                         response.forEach(sale => {
-                            let discount = parseInt(sale.discount);
-                            let payable = parseInt(sale.Payable_amount);
-                            let scrapAmount = parseInt(sale.scrap_amount);
+                            let discount = parseInt(sale.discount) || 0;
+                            let payable = parseInt(sale.Payable_amount) || 0;
+                            let scrapAmount = parseInt(sale.scrap_amount) || 0;
+
+                            let quantities = JSON.parse(sale.quantity);
+                            let quantityString = quantities.join(", ");
+                            let quantitySum = quantities.reduce((sum, q) => sum + parseFloat(q || 0), 0);
+                            totalQuantity += quantitySum;
 
                             totalDiscount += discount;
                             totalNetAmount += payable;
@@ -173,7 +179,7 @@
                 <td>${sale.customer}</td>
                 <td>${sale.sale_date}</td>
                 <td>${JSON.parse(sale.item_name).join(", ")}</td>
-                <td>${JSON.parse(sale.quantity).join(", ")}</td>
+                <td>${quantityString}</td>
                 <td>${sale.total_price}</td>
                 <td>${discount}</td>
                 <td>${scrapAmount}</td>
@@ -188,6 +194,12 @@
                     $('#totalDiscount').text(totalDiscount);
                     $('#totalScrapAmount').text(totalScrapAmount);
                     $('#totalNetAmount').text(totalNetAmount);
+
+                    // 👇 Add this line to show total quantity below the table
+                    if ($('#totalQuantity').length === 0) {
+                        $('.mt-3').append('<h5 class="text-danger">Total Quantity Sold: <strong id="totalQuantity">0</strong></h5>');
+                    }
+                    $('#totalQuantity').text(totalQuantity);
                 },
                 error: function(xhr, status, error) {
                     console.log(xhr.responseText);

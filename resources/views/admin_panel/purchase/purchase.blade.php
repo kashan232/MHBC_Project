@@ -168,7 +168,11 @@
     @include('admin_panel.include.footer_include')
     <script>
         $(document).ready(function() {
-            $('.paymentBtn').on('click', function() {
+            // Initialize DataTable
+            $('#example').DataTable();
+
+            // Delegate event binding for dynamic rows
+            $(document).on('click', '.paymentBtn', function() {
                 var purchaseId = $(this).data('id');
                 var invoiceNo = $(this).data('invoice_no');
                 var supplier = $(this).data('supplier');

@@ -56,9 +56,7 @@
                                                     <th>Profit</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="salesTableBody">
-                                                <!-- Filtered Sales Data Will Append Here -->
-                                            </tbody>
+                                            <tbody id="salesTableBody"></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -83,7 +81,7 @@
             let end_date = $('#end_date').val();
 
             $.ajax({
-                url: "{{ route('PRF-filter-sales') }}", // adjust route accordingly
+                url: "{{ route('PRF-filter-sales') }}",
                 method: "GET",
                 data: {
                     start_date: start_date,
@@ -102,42 +100,44 @@
                     if (response.length > 0) {
                         response.forEach(sale => {
                             let payable = parseFloat(sale.Payable_amount) || 0;
-
-                            let itemNames = [];
-                            let quantities = [];
-                            let profitAmounts = [];
-
-                            try {
-                                itemNames = JSON.parse(sale.item_name);
-                            } catch (e) {
-                                itemNames = [sale.item_name];
-                            }
-                            try {
-                                quantities = JSON.parse(sale.quantity);
-                            } catch (e) {
-                                quantities = [sale.quantity];
-                            }
-                            try {
-                                profitAmounts = sale.profit_amounts;
-                            } catch (e) {
-                                profitAmounts = [];
-                            }
-
                             totalSale += payable;
                             totalProfit += parseFloat(sale.total_profit || 0);
 
+                            let itemNames = [];
+                            let quantities = [];
+
+                            try {
+                                itemNames = JSON.parse(sale.item_name);
+                            } catch {
+                                itemNames = [sale.item_name];
+                            }
+
+                            try {
+                                quantities = JSON.parse(sale.quantity);
+                            } catch {
+                                quantities = [sale.quantity];
+                            }
+
+                            let profitDetailsHTML = "";
+                            sale.profit_amounts.forEach(item => {
+                                profitDetailsHTML += `
+                                <strong>${item.product}</strong> → 
+                                Qty: ${item.quantity}, 
+                                Profit/unit: ${item.profit_per_unit}, 
+                                Total: ${item.total_item_profit}<br>`;
+                            });
+
                             tableData += `<tr>
-                <td>${sale.invoice_no}</td>
-                <td>${sale.customer ?? 'N/A'}</td>
-                <td>${sale.sale_date}</td>
-                <td>${itemNames.join(", ")}</td>
-                <td>${quantities.join(", ")}</td>
-                <td>${payable.toFixed(2)}</td>
-                <td>
-                    Profit: ${profitAmounts.join(", ")}<br>
-                    Total: <strong>${parseFloat(sale.total_profit).toFixed(2)}</strong>
-                </td>
-            </tr>`;
+                            <td>${sale.invoice_no}</td>
+                            <td>${sale.customer ?? 'N/A'}</td>
+                            <td>${sale.sale_date}</td>
+                            <td>${itemNames.join(", ")}</td>
+                            <td>${quantities.join(", ")}</td>
+                            <td>${payable.toFixed(2)}</td>
+                            <td>${profitDetailsHTML}
+                                <strong class="text-primary">Total: ${parseFloat(sale.total_profit).toFixed(2)}</strong>
+                            </td>
+                        </tr>`;
                         });
                     } else {
                         tableData = '<tr><td colspan="7" class="text-center">No sales found for the selected date range.</td></tr>';

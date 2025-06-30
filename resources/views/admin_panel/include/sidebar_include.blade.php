@@ -113,6 +113,7 @@
                                     <span class="menu-title">Supplier Paid Amounts</span>
                                 </a>
                             </li>
+                           
                         </ul>
                     </div>
                 </li>
@@ -220,6 +221,13 @@
                                     class="nav-link">
                                     <i class="menu-icon la la-dot-circle"></i>
                                     <span class="menu-title"> Purchase Report </span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item ">
+                                <a href="{{ route('supplier-report') }}"
+                                    class="nav-link">
+                                    <i class="menu-icon la la-dot-circle"></i>
+                                    <span class="menu-title"> Supplier Report </span>
                                 </a>
                             </li>
                         </ul>

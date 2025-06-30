@@ -159,8 +159,11 @@ Route::get('/PRF-report', [ReportController::class, 'PRF_report'])->name('PRF-re
 Route::get('/PRF-filter-sales', [ReportController::class, 'PRFfiltersales'])->name('PRF-filter-sales');
 
 Route::get('/purchase-report', [ReportController::class, 'purchase_report'])->name('purchase-report');
-
 Route::get('/filter-purchase', [ReportController::class, 'filterpurchase'])->name('filter.purchase');
+
+Route::get('/supplier-report', [ReportController::class, 'supplier_report'])->name('supplier-report');
+Route::get('/filter-purchase-suplir', [ReportController::class, 'filterPurchasesuplir'])->name('filter.purchase.suplir');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
