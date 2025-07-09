@@ -154,6 +154,7 @@ class ProductController extends Controller
         $product = Product::where('product_name', $productName)->first();
         if ($product) {
             return response()->json([
+                'wholesale_price' => $product->wholesale_price,
                 'retail_price' => $product->retail_price,
                 'stock' => $product->stock,
                 'unit' => $product->unit,

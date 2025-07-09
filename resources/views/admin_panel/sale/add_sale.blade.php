@@ -368,7 +368,10 @@
                     <input type="text" name="unit[]" style="width:150px;" class="form-control unit" readonly>
                 </td>
                 <td><input type="number" name="quantity[]" style="width:150px;" class="form-control quantity" required></td>
-                <td><input type="number" name="price[]" style="width:150px;" class="form-control price" value="${price}" required></td>
+                <td>
+                    <input type="hidden" name="wholesale_price[]" class="form-control wholesale-price">
+                    <input type="number" name="price[]" style="width:150px;" class="form-control price" value="${price}" required>
+                </td>
                 <td><input type="number" name="total[]" style="width:150px;" class="form-control total" readonly></td>
                 <td>
                     <button type="button" class="btn btn-danger remove-row">Delete</button>
@@ -410,11 +413,11 @@
                 }
             });
 
-            // Fetch product details based on selected product
             $('#purchaseItems').on('change', '.item-name', function() {
                 const productName = $(this).val();
                 const row = $(this).closest('tr');
                 const priceInput = row.find('.price');
+                const wholesalePriceInput = row.find('.wholesale-price'); // Hidden input
                 const unitInput = row.find('.unit');
 
                 if (productName) {
@@ -422,11 +425,13 @@
                         .then(response => response.json())
                         .then(product => {
                             priceInput.val(product.retail_price);
-                            unitInput.val(product.unit); // Update unit
+                            wholesalePriceInput.val(product.wholesale_price); // hidden value
+                            unitInput.val(product.unit);
                         })
                         .catch(error => console.error('Error fetching product details:', error));
                 }
             });
+
 
             // Search product functionality
             $('#productSearch').on('keyup', function() {

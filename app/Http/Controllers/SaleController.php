@@ -165,6 +165,7 @@ class SaleController extends Controller
             'item_name' => json_encode($request->input('item_name', [])),
             'unit' => json_encode($request->input('unit', [])),
             'quantity' => json_encode($request->input('quantity', [])),
+            'wholesale_price' => json_encode($request->input('wholesale_price', [])),
             'price' => json_encode($request->input('price', [])),
             'total' => json_encode($request->input('total', [])),
             'note' => $request->input('note', ''),
